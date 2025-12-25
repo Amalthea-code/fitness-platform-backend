@@ -5,10 +5,72 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      UserRole
+  createdAt DateTime @default(now())
+  isActive  Boolean  @default(true)
+
+  trainer   TrainerProfile?
+  client    ClientProfile?
+}
+
+model TrainerProfile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  specialization String
+  experience  Int
+  bio         String?
+  plans TrainingPlan[]
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model ClientProfile {
+  id        String @id @default(uuid())
+  userId    String @unique
+  height    Int?
+  weight    Int?
+  level     String?
+  plans TrainingPlan[]
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model TrainingPlan {
+  id        String   @id @default(uuid())
+  name      String
+  goal      String
+  status    PlanStatus
+  trainerId String
+  clientId  String
+  startDate DateTime
+  endDate   DateTime?
+
+  trainer TrainerProfile @relation(fields: [trainerId], references: [id])
+  client  ClientProfile  @relation(fields: [clientId], references: [id])
+}
+
+
+
+enum UserRole {
+  ADMIN
+  TRAINER
+  CLIENT
+}
+
+enum PlanStatus {
+  ACTIVE
+  COMPLTED
+  PAUSED
 }
