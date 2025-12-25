@@ -17,6 +17,8 @@ model User {
 
   trainer   TrainerProfile?
   client    ClientProfile?
+
+  @@index([role])
 }
 
 model TrainerProfile {

@@ -14,7 +14,18 @@ export class UsersService {
         return this.prisma.user.findMany();
     }
 
-    findOne(id: string) {
+    findById(id: string) {
         return this.prisma.user.findUnique({ where: { id } });
+    }
+
+    findByEmail(email: string) {
+        return this.prisma.user.findUnique({ where: { email } })
+    }
+
+    deactivate(id: string) {
+        return this.prisma.user.update({
+            where: { id },
+            data: { isActive: false },
+        })
     }
 }
