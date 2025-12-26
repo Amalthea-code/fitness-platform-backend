@@ -12,7 +12,6 @@ export class UsersController {
         }
 
         const role: UserRole = UserRole[body.role as keyof typeof UserRole];
-
         return this.usersService.create({
             email: body.email,
             password: body.password,
