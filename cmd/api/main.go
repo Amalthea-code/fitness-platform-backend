@@ -29,10 +29,10 @@ func main() {
 
 	authHandler := &handlers.AuthHandler{DB: database}
 	r.Route("/auth", func(r chi.Router) {
-		r.Post("/register", authHandler.Register)
-		r.Post("/login", authHandler.Login)
-		r.Post("/logout", authHandler.Logout)
-		r.Get("/me", authHandler.Me)
+		r.Post("/register", authHandler.Register) // POST /auth/register
+		r.Post("/login", authHandler.Login)       // POST /auth/login
+		r.Post("/logout", authHandler.Logout)     // POST /auth/logout
+		r.Get("/me", authHandler.Me)              // POST /auth/me
 	})
 
 	usersHandler := &handlers.UsersHandler{DB: database}
