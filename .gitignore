@@ -1,3 +1,11 @@
-.idea
+# IDE
+.idea/
 
+# Env files
 .env
+.env.local
+.env.*.local
+
+# Go
+bin/
+*.exe
