@@ -28,11 +28,19 @@ func main() {
 	r := chi.NewRouter()
 
 	authHandler := &handlers.AuthHandler{DB: database}
+	r.Route("/auth", func(r chi.Router) {
+		r.Post("/register", authHandler.Register)
+		r.Post("/login", authHandler.Login)
+		r.Post("/logout", authHandler.Logout)
+		r.Get("/me", authHandler.Me)
+	})
 
-	r.Post("/auth/register", authHandler.Register)
-	r.Post("/auth/login", authHandler.Login)
-	r.Post("/auth/logout", authHandler.Logout)
-	r.Get("/auth/me", authHandler.Me)
+	usersHandler := &handlers.UsersHandler{DB: database}
+	r.Route("/users", func(r chi.Router) {
+		r.Get("/", usersHandler.ListUsers)   // GET /users
+		r.Post("/", usersHandler.CreateUser) // POST /users
+		r.Get("/{id}", usersHandler.GetUser) // GET /users/:id
+	})
 
 	log.Printf("server started on :%s", cfg.HTTPPort)
 	http.ListenAndServe(":"+cfg.HTTPPort, r)
