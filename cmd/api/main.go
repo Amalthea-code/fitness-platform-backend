@@ -29,8 +29,10 @@ func main() {
 
 	authHandler := &handlers.AuthHandler{DB: database}
 
-	r.Post("/register", authHandler.Register)
-	r.Post("/login", authHandler.Login)
+	r.Post("/auth/register", authHandler.Register)
+	r.Post("/auth/login", authHandler.Login)
+	r.Post("/auth/logout", authHandler.Logout)
+	r.Get("/auth/me", authHandler.Me)
 
 	log.Printf("server started on :%s", cfg.HTTPPort)
 	http.ListenAndServe(":"+cfg.HTTPPort, r)

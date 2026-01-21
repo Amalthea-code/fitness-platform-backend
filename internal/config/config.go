@@ -39,6 +39,13 @@ func Load() *Config {
 	return cfg
 }
 
+func getEnv(key, fallback string) string {
+	if v := os.Getenv(key); v != "" {
+		return v
+	}
+	return fallback
+}
+
 func (c *Config) GetDSN() string {
 	return fmt.Sprintf(
 		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
@@ -48,11 +55,4 @@ func (c *Config) GetDSN() string {
 		c.DBPort,
 		c.DBName,
 	)
-}
-
-func getEnv(key, fallback string) string {
-	if v := os.Getenv(key); v != "" {
-		return v
-	}
-	return fallback
 }
